@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Task1.Matrix
 {
-    public class DiagonalMatrix<T> : SymmetricMatrix<T>
+    public class DiagonalMatrix<T> : MatrixTemplate<T>
     {
-        public DiagonalMatrix(int columns)
-            : base(columns) { }
 
         public DiagonalMatrix(params T[] array)
         {
@@ -54,6 +52,22 @@ namespace Task1.Matrix
                     OnNewElement(arg);
                 }
             }
+        }
+
+        public override T GetValue(int i, int j)
+        {
+            if (i != j)
+                return default(T);
+            else
+                return this.matrix[i, j];
+        }
+
+        public override void SetValue(int i, int j, T value)
+        {
+            if (i != j)
+                this.matrix[i, j] = default(T);
+            else
+                this.matrix[i, j] = value;
         }
     }
 }

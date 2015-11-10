@@ -8,7 +8,7 @@ namespace Task1.Matrix
 {
     public class SquareMatrix<T> : MatrixTemplate<T>
     {
-        protected T[,] matrix;
+        //T[,] matrix;
 
         public SquareMatrix()
         {
@@ -29,39 +29,16 @@ namespace Task1.Matrix
             this.matrix = (T[,])array.Clone();
         }
 
-        public int GetWidth()
+
+
+        public override T GetValue(int i, int j)
         {
-            return matrix.GetLength(0);
+            return this.matrix[i, j];
         }
 
-        public virtual T this[int i, int j]
+        public override void SetValue(int i, int j, T value)
         {
-            get 
-            {
-                if ((i < 0) || (j < 0) || (i > matrix.Length) || (j > matrix.Length))
-                    throw new ArgumentException("Index outside the matrix.");
-                return matrix[i, j];
-            }
-            set 
-            {
-                if ((i < 0) || (j < 0) || (i > matrix.Length) || (j > matrix.Length))
-                    throw new ArgumentException("index outside the matrix.");
-                matrix[i,j] = value;
-                MatrixEventArgs<T> arg = new MatrixEventArgs<T>(i,j,value);
-                OnNewElement(arg);
-            }
-        }
-
-        public string ToString()
-        {
-            StringBuilder result = new StringBuilder();
-            for (int i = 0; i < this.matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < this.matrix.GetLength(1); j++)
-                    result.Append(matrix[i, j] + " ");
-                result.Append("\n");
-            }
-            return result.ToString();
+            this.matrix[i, j] = value;
         }
     }
 }

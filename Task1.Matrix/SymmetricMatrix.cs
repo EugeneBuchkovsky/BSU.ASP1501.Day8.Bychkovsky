@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task1.Matrix
 {
-    public class SymmetricMatrix<T> : SquareMatrix<T>
+    public class SymmetricMatrix<T> : MatrixTemplate<T>
     {
 
         public SymmetricMatrix()
@@ -14,7 +14,9 @@ namespace Task1.Matrix
 
 
         public SymmetricMatrix(int columns)
-            : base(columns) { }
+        {
+            this.matrix = new T[columns, columns]; 
+        }
 
         public SymmetricMatrix(T[,] array)
         {
@@ -29,28 +31,20 @@ namespace Task1.Matrix
             matrix = (T[,])array.Clone();
         }
 
-        public override T this[int i, int j]
+        public override T GetValue(int i, int j)
         {
-            get
+            return this.matrix[i, j];
+        }
+
+        public override void SetValue(int i, int j, T value)
+        {
+            if (i != j)
             {
-                if ((i < 0) || (j < 0) || (i > matrix.Length) || (j > matrix.Length))
-                    throw new ArgumentException("Index outside the matrix.");
-                return matrix[i, j];
+                this.matrix[j, i] = value;
             }
-            set
-            {
-                if ((i < 0) || (j < 0) || (i > matrix.Length) || (j > matrix.Length))
-                    throw new ArgumentException("Index outside the matrix.");
-                matrix[i, j] = value;
-                MatrixEventArgs<T> arg = new MatrixEventArgs<T>(i, j, value);
-                OnNewElement(arg);
-                if (i != j)
-                {
-                    matrix[j, i] = value;
-                    MatrixEventArgs<T> arg1 = new MatrixEventArgs<T>(j, i, value);
-                    OnNewElement(arg1);
-                }
-            }
+            this.matrix[i, j] = value;
+            MatrixEventArgs<T> arg = new MatrixEventArgs<T>(j, i, value);
+            OnNewElement(arg);
         }
     }
 }
